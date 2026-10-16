@@ -50,4 +50,4 @@ The script reads the version from `StickIt.csproj` and writes the EXE and its sa
 
 ## GitHub releases
 
-Push a version tag such as `v1.06.03` to build a Windows x64 release. GitHub Actions attaches both `StickIt.exe` and a ZIP containing the EXE and sample `.txt` files. The workflow is in `.github/workflows/release.yml`.
+Push a version tag such as `v1.06.03` to build a Windows x64 release. GitHub Actions runs the same `publish.ps1` script used for local builds, then attaches both `StickIt.exe` and a ZIP containing the EXE and sample `.txt` files. The workflow is in `.github/workflows/release.yml`.

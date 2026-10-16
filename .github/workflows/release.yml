@@ -21,24 +21,19 @@ jobs:
         with:
           dotnet-version: 10.0.x
 
-      - name: Publish self-contained EXE
+      - name: Publish EXE and package sample lists
         shell: pwsh
-        run: >-
-          dotnet publish .\StickIt.csproj -c Release -r win-x64
-          --self-contained true -p:PublishSingleFile=true
-          -p:DebugType=None -p:DebugSymbols=false -o .\publish
-
-      - name: Package EXE and sample lists
-        shell: pwsh
-        run: Compress-Archive -Path .\publish\* -DestinationPath ".\StickIt-$env:GITHUB_REF_NAME-win-x64.zip"
+        run: .\publish.ps1
 
       - name: Create GitHub Release
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
-        run: >-
-          gh release create $env:GITHUB_REF_NAME
-          .\publish\StickIt.exe
-          ".\StickIt-$env:GITHUB_REF_NAME-win-x64.zip"
-          --title "StickIt $env:GITHUB_REF_NAME"
-          --generate-notes
+        run: |
+          $version = $env:GITHUB_REF_NAME -replace '^v', ''
+          $assetDirectory = ".\dist\local\$version"
+          gh release create $env:GITHUB_REF_NAME `
+            (Join-Path $assetDirectory 'StickIt.exe') `
+            (Join-Path '.\dist\local' "StickIt-v$version-win-x64.zip") `
+            --title "StickIt $env:GITHUB_REF_NAME" `
+            --generate-notes
