@@ -1,0 +1,133 @@
+<Application x:Class="StickIt.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <SolidColorBrush x:Key="WindowBackground" Color="#FF111318" />
+        <SolidColorBrush x:Key="PanelBackground" Color="#FF1B1E25" />
+        <SolidColorBrush x:Key="PanelBorder" Color="#FF2B3039" />
+        <SolidColorBrush x:Key="TextPrimary" Color="#FFE8EAF0" />
+        <SolidColorBrush x:Key="TextSecondary" Color="#FFA6ACB8" />
+        <SolidColorBrush x:Key="TextMuted" Color="#FF7F8794" />
+        <SolidColorBrush x:Key="AccentBrush" Color="#FF91A8FF" />
+        <SolidColorBrush x:Key="WarmAccentBackground" Color="#FF3A3323" />
+        <SolidColorBrush x:Key="WarmAccentForeground" Color="#FFE9D79A" />
+        <SolidColorBrush x:Key="WarmAccentBorder" Color="#FF65572E" />
+        <SolidColorBrush x:Key="WarmAccentHoverBackground" Color="#FF4A4029" />
+        <SolidColorBrush x:Key="WarmAccentHoverBorder" Color="#FF9B8240" />
+        <SolidColorBrush x:Key="ButtonBackground" Color="#FF252A33" />
+        <SolidColorBrush x:Key="ButtonForeground" Color="#FFE8EAF0" />
+        <SolidColorBrush x:Key="ButtonBorderBrush" Color="#FF383E49" />
+        <SolidColorBrush x:Key="ButtonHoverBackground" Color="#FF313949" />
+        <SolidColorBrush x:Key="ButtonHoverBorderBrush" Color="#FF596887" />
+        <SolidColorBrush x:Key="ButtonPressedBackground" Color="#FF3B4760" />
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
+            <Setter Property="Foreground" Value="{DynamicResource ButtonForeground}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="8,5" />
+            <Setter Property="Margin" Value="0,0,0,4" />
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="ButtonBorder" Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="Center" RecognizesAccessKey="True" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="{DynamicResource ButtonHoverBackground}" />
+                                <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="{DynamicResource ButtonHoverBorderBrush}" />
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="Tag" Value="Minimize" />
+                                    <Condition Property="IsMouseOver" Value="True" />
+                                </MultiTrigger.Conditions>
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="#FF26394F" />
+                                <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="#FF4F79A8" />
+                                <Setter Property="Foreground" Value="#FFD7E8FA" />
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="Tag" Value="Close" />
+                                    <Condition Property="IsMouseOver" Value="True" />
+                                </MultiTrigger.Conditions>
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="#FF49272C" />
+                                <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="#FFB94A55" />
+                                <Setter Property="Foreground" Value="#FFFFD9DC" />
+                            </MultiTrigger>
+                            <Trigger Property="Tag" Value="StickItAccent">
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="{DynamicResource WarmAccentBackground}" />
+                                <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="{DynamicResource WarmAccentBorder}" />
+                                <Setter Property="Foreground" Value="{DynamicResource WarmAccentForeground}" />
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="Tag" Value="StickItAccent" />
+                                    <Condition Property="IsMouseOver" Value="True" />
+                                </MultiTrigger.Conditions>
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="{DynamicResource WarmAccentHoverBackground}" />
+                                <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="{DynamicResource WarmAccentHoverBorder}" />
+                            </MultiTrigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="{DynamicResource ButtonPressedBackground}" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.55" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="ToggleButton">
+            <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
+            <Setter Property="Foreground" Value="{DynamicResource ButtonForeground}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="8,5" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border x:Name="ToggleBorder" Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ToggleBorder" Property="Background" Value="{DynamicResource ButtonHoverBackground}" />
+                                <Setter TargetName="ToggleBorder" Property="BorderBrush" Value="{DynamicResource ButtonHoverBorderBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="ToggleBorder" Property="Background" Value="#FF267447" />
+                                <Setter TargetName="ToggleBorder" Property="BorderBrush" Value="#FF45A96B" />
+                                <Setter Property="Foreground" Value="#FFF0FFF4" />
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsChecked" Value="True" />
+                                    <Condition Property="IsMouseOver" Value="True" />
+                                </MultiTrigger.Conditions>
+                                <Setter TargetName="ToggleBorder" Property="Background" Value="#FF318653" />
+                            </MultiTrigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="ToggleBorder" Property="Opacity" Value="0.85" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Application.Resources>
+</Application>

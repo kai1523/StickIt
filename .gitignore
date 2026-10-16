@@ -1,0 +1,26 @@
+# .NET build output
+**/bin/
+**/obj/
+.vs/
+
+# Local runtime and tooling state
+.appdata/
+.dotnet-cli/
+.nuget-packages/
+
+# Published builds and local release output
+dist/
+publish/
+build-check-*/
+
+# Empty local files used while diagnosing list refresh behavior
+/test.txt
+/test_2.txt
+
+# User-specific IDE files
+*.user
+*.suo
+
+# Windows shell metadata
+Thumbs.db
+Desktop.ini

@@ -1,0 +1,44 @@
+name: Build and publish release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v7
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Publish self-contained EXE
+        shell: pwsh
+        run: >-
+          dotnet publish .\StickIt.csproj -c Release -r win-x64
+          --self-contained true -p:PublishSingleFile=true
+          -p:DebugType=None -p:DebugSymbols=false -o .\publish
+
+      - name: Package EXE and sample lists
+        shell: pwsh
+        run: Compress-Archive -Path .\publish\* -DestinationPath ".\StickIt-$env:GITHUB_REF_NAME-win-x64.zip"
+
+      - name: Create GitHub Release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          gh release create $env:GITHUB_REF_NAME
+          .\publish\StickIt.exe
+          ".\StickIt-$env:GITHUB_REF_NAME-win-x64.zip"
+          --title "StickIt $env:GITHUB_REF_NAME"
+          --generate-notes
