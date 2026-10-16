@@ -40,13 +40,13 @@ Development runs load text files directly from the project folder, so Refresh pi
 
 ## Optional standalone executable
 
-Only publish an executable when you need one:
+To build the self-contained Windows x64 executable and a ZIP with the sample text lists, run:
 
 ```powershell
-dotnet publish .\StickIt.csproj -c Release -r win-x64 --self-contained true -o .\dist
+.\publish.ps1
 ```
 
-The project is configured for a self-contained, single-file Windows executable.
+The script reads the version from `StickIt.csproj` and writes the EXE and its sample lists under `dist\local\<version>`, with a ZIP beside that folder. It replaces only that version's generated output. The project is configured for a self-contained, single-file Windows executable.
 
 ## GitHub releases
 
