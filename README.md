@@ -2,6 +2,8 @@
 
 StickIt is a small, always-on-top Windows app that turns lines in nearby text files into copy buttons.
 
+Project site: https://kai1523.github.io/StickIt/
+
 ## Behavior
 
 - Lists top-level `.txt` files in a left sidebar and shows the selected file's contents on the right.

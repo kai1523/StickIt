@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111318">
+  <meta name="description" content="StickIt turns editable text lists into one-click copy buttons in a compact Windows window.">
+  <title>StickIt — Keep useful text close</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="StickIt home">
+      <svg class="brand-icon" viewBox="0 0 40 40" aria-hidden="true">
+        <path d="M8 4h24v32H8z" fill="#FFEAA0" />
+        <path d="M8 4h24v8H8z" fill="#E7C65F" />
+        <path d="M13 19h14M13 24h14M13 29h9" fill="none" stroke="#796526" stroke-linecap="round" stroke-width="2" />
+      </svg>
+      <span>StickIt</span>
+    </a>
+    <nav aria-label="Main navigation">
+      <a href="#features">Features</a>
+      <a href="#lists">Text lists</a>
+      <a href="#start">Get started</a>
+      <a class="nav-source" href="https://github.com/kai1523/StickIt">GitHub</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">A small helper for everyday work</p>
+        <h1>Keep useful text<br><span>one click away.</span></h1>
+        <p class="intro">StickIt turns simple text files into a compact, always-on-top Windows window of copy buttons. Find a snippet, click it, and get straight back to work.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="https://github.com/kai1523/StickIt/releases">View releases</a>
+          <a class="button button-secondary" href="https://github.com/kai1523/StickIt">Explore the repository</a>
+        </div>
+        <p class="hero-note">Windows · .NET 10 · Plain-text lists</p>
+      </div>
+      <div class="hero-card" aria-label="StickIt workflow preview">
+        <div class="mock-window">
+          <div class="mock-topbar"><span class="mock-refresh">↻</span><span class="mock-search">⌕</span><span class="mock-gear">⚙</span><span class="mock-window-controls">− &nbsp; ×</span></div>
+          <div class="mock-content">
+            <aside class="mock-files"><span class="mock-caption">FILES</span><span class="file-selected">Work replies</span><span>Daily focus</span><span>Writing starters</span></aside>
+            <div class="mock-list"><span class="mock-heading">Quick replies</span><span class="mock-button">Thanks, I’ll take a look.</span><span class="mock-button">Could you share an example?</span><span class="mock-button">I’ve updated the file. <b>Update note</b></span></div>
+          </div>
+          <div class="mock-status">Copied: Thanks, I’ll take a look.</div>
+        </div>
+        <p class="mock-caption-bottom">Your lists stay editable as ordinary .txt files.</p>
+      </div>
+    </section>
+
+    <section class="section" id="features">
+      <div class="section-heading">
+        <p class="eyebrow">Made to stay out of the way</p>
+        <h2>Small window. Useful details.</h2>
+      </div>
+      <div class="feature-grid">
+        <article class="feature-card"><span class="feature-mark">01</span><h3>One-click copy</h3><p>Click a button to copy its value. Add a tab to show a short label while keeping the full value in the clipboard.</p></article>
+        <article class="feature-card"><span class="feature-mark">02</span><h3>Search across lists</h3><p>Find text in comments, labels, and copied values. Results keep their file and section context.</p></article>
+        <article class="feature-card"><span class="feature-mark">03</span><h3>Edit where you work</h3><p>Update lists in StickIt or in your text editor. Changes are picked up automatically.</p></article>
+        <article class="feature-card"><span class="feature-mark">04</span><h3>Stay compact</h3><p>Keep StickIt on top, resize it to fit, or fold it into a small sticky-note bubble.</p></article>
+      </div>
+    </section>
+
+    <section class="section list-section" id="lists">
+      <div>
+        <p class="eyebrow">Your content, your files</p>
+        <h2>Easy to read.<br>Easy to change.</h2>
+        <p>StickIt reads top-level <code>.txt</code> files beside the app. Keep them in version control, edit them with any text editor, or use StickIt’s built-in editor.</p>
+        <p>Lines become buttons. Comment headings create readable sections. Lists stay portable because their content is plain text.</p>
+      </div>
+      <div class="format-card">
+        <div class="format-title"><span>Example list</span><span class="file-pill">work.txt</span></div>
+        <pre><code>## Quick replies
+Thanks for the details.
+Could you share an example?
+account-42&#9;Account ID
+### Follow-up
+I’ll send an update tomorrow.</code></pre>
+        <div class="format-legend"><span><i class="dot dot-comment"></i>Comments are headings, not buttons</span><span><i class="dot dot-button"></i>Click a line to copy it</span></div>
+      </div>
+    </section>
+
+    <section class="section start-section" id="start">
+      <div class="section-heading">
+        <p class="eyebrow">Start with a list</p>
+        <h2>Up and running in minutes.</h2>
+      </div>
+      <div class="start-grid">
+        <article class="start-card"><span class="step">1</span><h3>Download or build</h3><p>Get the Windows package from Releases, or build the project with the .NET 10 SDK.</p><a href="https://github.com/kai1523/StickIt/releases">Open Releases →</a></article>
+        <article class="start-card"><span class="step">2</span><h3>Add your text files</h3><p>Put <code>.txt</code> lists beside StickIt. You can also drag files onto the left panel.</p><a href="https://github.com/kai1523/StickIt/blob/main/How%20to%20use%20StickIt.txt">Read the in-app guide →</a></article>
+        <article class="start-card"><span class="step">3</span><h3>Click to copy</h3><p>Choose a file, find a line, and click its button. Search works across all your lists.</p><a href="https://github.com/kai1523/StickIt/blob/main/README.md">See all features →</a></article>
+      </div>
+    </section>
+
+    <section class="closing">
+      <div><p class="eyebrow">Built around a real daily workflow</p><h2>Keep the words you reuse close.</h2></div>
+      <a class="button button-primary" href="https://github.com/kai1523/StickIt">Visit StickIt on GitHub</a>
+    </section>
+  </main>
+
+  <footer class="site-footer"><span>StickIt · Version 1.07.17</span><span>Made for Windows · <a href="https://github.com/kai1523/StickIt">GitHub repository</a></span></footer>
+</body>
+</html>
