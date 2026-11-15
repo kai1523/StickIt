@@ -15,7 +15,7 @@ namespace StickIt;
 
 public partial class MainWindow : Window
 {
-    private const string VersionLabel = "v1.07.11";
+    private const string VersionLabel = "v1.07.12";
     private const int WmNcHitTest = 0x0084;
     private const int HtLeft = 10;
     private const int HtRight = 11;
@@ -298,6 +298,7 @@ public partial class MainWindow : Window
         SearchTextBox.Background = BrushWithOpacity("#FF20242C", surfaceOpacity);
         SearchTextBox.BorderBrush = panelBorder;
         SearchTextBox.Opacity = shouldFade ? 0 : 1;
+        UpdateSearchButtonAppearance(surfaceOpacity, chromeOpacity);
         var topBarBackground = BrushWithOpacity("#FF111318", chromeOpacity);
         TopBar.Background = topBarBackground;
         BottomBar.Background = topBarBackground;
@@ -1014,12 +1015,21 @@ public partial class MainWindow : Window
 
     private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
     {
+        UpdateSearchButtonAppearance();
         if (SearchPlaceholderText is not null)
             SearchPlaceholderText.Visibility = string.IsNullOrEmpty(SearchTextBox.Text)
                 ? Visibility.Visible
                 : Visibility.Collapsed;
         if (ContentItems is not null)
             RenderSelectedFile();
+    }
+
+    private void UpdateSearchButtonAppearance(int surfaceOpacity = 100, int borderOpacity = 100)
+    {
+        var hasActiveQuery = !string.IsNullOrWhiteSpace(SearchTextBox.Text);
+        SearchButton.Background = BrushWithOpacity(hasActiveQuery ? "#FF2B3450" : "#FF252A33", surfaceOpacity);
+        SearchButton.BorderBrush = BrushWithOpacity(hasActiveQuery ? "#FF5367A3" : "#FF383E49", borderOpacity);
+        SearchButton.Foreground = Brush(hasActiveQuery ? "#FFC5D1FF" : "#FFE8EAF0");
     }
 
     private static bool TryParseComment(string line, out int level, out string text)
