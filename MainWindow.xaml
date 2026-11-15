@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:primitives="clr-namespace:System.Windows.Controls.Primitives;assembly=PresentationFramework"
         Title="StickIt" Width="300" Height="440" MinWidth="300" MinHeight="320"
-        Topmost="True" ResizeMode="CanResizeWithGrip" WindowStyle="None" AllowsTransparency="True"
+        Topmost="True" ResizeMode="CanResize" WindowStyle="None" AllowsTransparency="True"
         WindowStartupLocation="CenterScreen" Background="Transparent" FontFamily="Segoe UI">
     <Grid Background="Transparent">
       <Grid x:Name="MainView" Margin="8" PreviewMouseDown="MainView_PreviewMouseDown">
@@ -100,7 +100,7 @@
 
         <DockPanel x:Name="BottomBar" Grid.Row="2" Margin="0" LastChildFill="True"
                    Background="Transparent">
-            <TextBlock x:Name="VersionText" DockPanel.Dock="Right" Text="v1.06.03"
+            <TextBlock x:Name="VersionText" DockPanel.Dock="Right" Text="v1.07.00"
                        FontSize="10" Foreground="{StaticResource TextMuted}" VerticalAlignment="Center" />
             <Border x:Name="StatusIndicatorBorder" VerticalAlignment="Stretch"
                     Padding="5,6.5" BorderThickness="0" CornerRadius="0"

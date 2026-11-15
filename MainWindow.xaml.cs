@@ -14,7 +14,17 @@ namespace StickIt;
 
 public partial class MainWindow : Window
 {
-    private const string VersionLabel = "v1.06.03";
+    private const string VersionLabel = "v1.07.00";
+    private const int WmNcHitTest = 0x0084;
+    private const int HtLeft = 10;
+    private const int HtRight = 11;
+    private const int HtTop = 12;
+    private const int HtTopLeft = 13;
+    private const int HtTopRight = 14;
+    private const int HtBottom = 15;
+    private const int HtBottomLeft = 16;
+    private const int HtBottomRight = 17;
+    private const double ResizeBorderSize = 8;
     private const int MinimumFadeOpacityPercent = 10;
     private const int MaximumFadeOpacityPercent = 90;
     private const int FadeOpacityStepPercent = 10;
@@ -70,6 +80,7 @@ public partial class MainWindow : Window
         SourceInitialized += (_, _) =>
         {
             EnableDarkTitleBar();
+            InstallResizeHitTest();
         };
         Activated += (_, _) => ApplyFadeAppearance();
         Deactivated += (_, _) => ApplyFadeAppearance();
@@ -205,6 +216,47 @@ public partial class MainWindow : Window
 
     [DllImport("dwmapi.dll", PreserveSig = true)]
     private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attribute, ref int value, int valueSize);
+
+    private void InstallResizeHitTest()
+    {
+        var windowHandle = new WindowInteropHelper(this).Handle;
+        HwndSource.FromHwnd(windowHandle)?.AddHook(WindowProc);
+    }
+
+    private IntPtr WindowProc(IntPtr hwnd, int message, IntPtr wParam, IntPtr lParam, ref bool handled)
+    {
+        if (message != WmNcHitTest || _isBubbleMode || ResizeMode == ResizeMode.NoResize ||
+            WindowState != WindowState.Normal)
+            return IntPtr.Zero;
+
+        var packedPoint = lParam.ToInt64();
+        var screenX = unchecked((short)(packedPoint & 0xFFFF));
+        var screenY = unchecked((short)((packedPoint >> 16) & 0xFFFF));
+        var point = PointFromScreen(new Point(screenX, screenY));
+        var isLeft = point.X >= 0 && point.X < ResizeBorderSize;
+        var isRight = point.X < ActualWidth && point.X >= ActualWidth - ResizeBorderSize;
+        var isTop = point.Y >= 0 && point.Y < ResizeBorderSize;
+        var isBottom = point.Y < ActualHeight && point.Y >= ActualHeight - ResizeBorderSize;
+
+        var hitTest = (isLeft, isRight, isTop, isBottom) switch
+        {
+            (true, _, true, _) => HtTopLeft,
+            (_, true, true, _) => HtTopRight,
+            (true, _, _, true) => HtBottomLeft,
+            (_, true, _, true) => HtBottomRight,
+            (true, _, _, _) => HtLeft,
+            (_, true, _, _) => HtRight,
+            (_, _, true, _) => HtTop,
+            (_, _, _, true) => HtBottom,
+            _ => 0
+        };
+
+        if (hitTest == 0)
+            return IntPtr.Zero;
+
+        handled = true;
+        return new IntPtr(hitTest);
+    }
 
     private void TopBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {

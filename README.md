@@ -13,6 +13,7 @@ StickIt is a small, always-on-top Windows app that turns lines in nearby text fi
 - Watches the app folder for `.txt` additions, edits, removals, and renames. A Refresh button is also available.
 - Compact dark theme with a default window size of **300 × 440** WPF units (approximately pixels at 100% display scaling).
 - Resizable file sidebar; long button labels and filenames truncate to fit their panels.
+- Resize the window from any edge or corner.
 - Comment text has no background or indentation.
 - Spacing reference: **2/10** (1 = tightest, 10 = roomiest); 8-unit outer margin, 6–8-unit panel padding, 6-unit panel gap, and 4-unit button gaps.
 - Top bar shows the live window size and includes Refresh and a Settings dropdown.
@@ -26,7 +27,7 @@ StickIt is a small, always-on-top Windows app that turns lines in nearby text fi
 - The left panel includes a compact, centered StickIt button that collapses the app into a draggable 68 × 68 square pastel sticky-note bubble. Its draggable top half is centered over the StickIt button; click its lower half to restore the main window at its original size, with the empty center of the top bar aligned to the restore button.
 - Copy confirmation appears in a borderless status bar that matches the top-bar background; successful copy text is highlighted in pale green.
 - The top and bottom bars are slightly thicker, with no gaps between the bars and the main panels.
-- Version: **1.06.03** (Major.Minor.Step).
+- Version: **1.07.00** (Major.Minor.Step).
 
 ## Development
 
@@ -50,4 +51,4 @@ The script reads the version from `StickIt.csproj` and writes the EXE and its sa
 
 ## GitHub releases
 
-Push a version tag such as `v1.06.03` to build a Windows x64 release. GitHub Actions runs the same `publish.ps1` script used for local builds, then attaches both `StickIt.exe` and a ZIP containing the EXE and sample `.txt` files. The workflow is in `.github/workflows/release.yml`.
+Push a version tag such as `v1.07.00` to build a Windows x64 release. GitHub Actions runs the same `publish.ps1` script used for local builds, then attaches both `StickIt.exe` and a ZIP containing the EXE and sample `.txt` files. The workflow is in `.github/workflows/release.yml`.
