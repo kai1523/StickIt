@@ -8,6 +8,7 @@ StickIt is a small, always-on-top Windows app that turns lines in nearby text fi
 - Drag `.txt` files onto the sidebar to copy them into the app folder; duplicate names receive `_2`, `_3`, and higher suffixes. The imported file becomes selected.
 - Muted amber accents mark the StickIt bubble control and the currently selected file immediately after import.
 - Right-click a file in the sidebar for **Edit in StickIt**, **Open in external editor**, and **Show in Explorer**. The in-app editor warns about unsaved edits and detects external file changes before saving.
+- The in-app editor's title bar uses the same dark system theme as the main window.
 - Turns ordinary non-blank lines into copy buttons. If a line contains a tab, text before the first tab is copied and the rest is shown as the button label; without a tab, the full line is shown and copied.
 - Search works across all top-level `.txt` files in the app folder, case-insensitively matching comment text, visible button labels, and copied text. Results are grouped by filename. A matching comment shows its whole section up to the next comment; a matching button shows its comment heading as context.
 - Search is toggled from a compact magnifier button in the top bar. The magnifier hides or reopens the field while retaining the query; its × button clears the query and restores the selected list. Settings is represented by a gear icon.
@@ -33,7 +34,7 @@ StickIt is a small, always-on-top Windows app that turns lines in nearby text fi
 - Copy confirmation appears in a borderless status bar that matches the top-bar background; successful copy text is highlighted in pale green.
 - The top and bottom bars are slightly thicker, with no gaps between the bars and the main panels.
 - The sticky-note icon is used by the app window and Windows executable.
-- Version: **1.07.16** (Major.Minor.Step).
+- Version: **1.07.17** (Major.Minor.Step).
 
 ## Development
 
@@ -57,4 +58,4 @@ The script reads the version from `StickIt.csproj` and writes the EXE and its sa
 
 ## GitHub releases
 
-Push a version tag such as `v1.07.16` to build a Windows x64 release. GitHub Actions runs the same `publish.ps1` script used for local builds, then attaches both `StickIt.exe` and a ZIP containing the EXE and sample `.txt` files. The workflow is in `.github/workflows/release.yml`.
+Push a version tag such as `v1.07.17` to build a Windows x64 release. GitHub Actions runs the same `publish.ps1` script used for local builds, then attaches both `StickIt.exe` and a ZIP containing the EXE and sample `.txt` files. The workflow is in `.github/workflows/release.yml`.

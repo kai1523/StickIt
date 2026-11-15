@@ -1,13 +1,17 @@
 using System.ComponentModel;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Interop;
 
 namespace StickIt;
 
 public partial class TextEditorWindow : Window
 {
+    private const int DwmaUseImmersiveDarkMode = 20;
+    private const int DwmaUseImmersiveDarkModeLegacy = 19;
     private readonly string _filePath;
     private byte[] _originalBytes;
     private Encoding _encoding = new UTF8Encoding(false);
@@ -19,6 +23,7 @@ public partial class TextEditorWindow : Window
     public TextEditorWindow(string filePath)
     {
         InitializeComponent();
+        SourceInitialized += (_, _) => EnableDarkTitleBar();
         _filePath = Path.GetFullPath(filePath);
         FileNameText.Text = Path.GetFileName(_filePath);
         Title = $"Edit {Path.GetFileName(_filePath)} — StickIt";
@@ -39,6 +44,18 @@ public partial class TextEditorWindow : Window
         EditorTextBox.CaretIndex = 0;
         UpdateEditorState();
     }
+
+    private void EnableDarkTitleBar()
+    {
+        var windowHandle = new WindowInteropHelper(this).Handle;
+        var enabled = 1;
+        var result = DwmSetWindowAttribute(windowHandle, DwmaUseImmersiveDarkMode, ref enabled, sizeof(int));
+        if (result != 0)
+            _ = DwmSetWindowAttribute(windowHandle, DwmaUseImmersiveDarkModeLegacy, ref enabled, sizeof(int));
+    }
+
+    [DllImport("dwmapi.dll", PreserveSig = true)]
+    private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attribute, ref int value, int valueSize);
 
     private void EditorTextBox_TextChanged(object sender, TextChangedEventArgs e) => UpdateEditorState();
 
