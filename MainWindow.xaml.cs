@@ -15,7 +15,7 @@ namespace StickIt;
 
 public partial class MainWindow : Window
 {
-    private const string VersionLabel = "v1.07.08";
+    private const string VersionLabel = "v1.07.09";
     private const int WmNcHitTest = 0x0084;
     private const int HtLeft = 10;
     private const int HtRight = 11;
@@ -355,6 +355,12 @@ public partial class MainWindow : Window
 
     private void SearchButton_Click(object sender, RoutedEventArgs e)
     {
+        if (SearchDropdownBorder.Visibility == Visibility.Visible)
+        {
+            SearchDropdownBorder.Visibility = Visibility.Collapsed;
+            return;
+        }
+
         SettingsDropdownBorder.Visibility = Visibility.Collapsed;
         SearchDropdownBorder.Visibility = Visibility.Visible;
         SearchTextBox.Focus();
