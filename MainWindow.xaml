@@ -18,7 +18,6 @@
         <Grid x:Name="TopBar" Grid.Row="0" Margin="0" MinHeight="27" Panel.ZIndex="2"
               Background="Transparent" PreviewMouseLeftButtonDown="TopBar_MouseLeftButtonDown">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
@@ -26,27 +25,24 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Button x:Name="RefreshButton" Grid.Column="3" Content="&#xE72C;" Width="24" Height="22"
+            <Button x:Name="RefreshButton" Grid.Column="2" Content="&#xE72C;" Width="24" Height="22"
                     Padding="2" FontFamily="Segoe MDL2 Assets" FontSize="11" VerticalAlignment="Center"
                     HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                     ToolTip="Refresh text lists"
                     Click="RefreshButton_Click" />
-            <TextBlock x:Name="WindowSizeText" Grid.Column="1" Text="350 × 500"
-                       Margin="7,0,0,0" VerticalAlignment="Center" FontSize="9"
-                       Foreground="{StaticResource TextMuted}" />
-            <Button x:Name="SearchButton" Grid.Column="2" Content="&#xE721;" Width="24" Height="22"
+            <Button x:Name="SearchButton" Grid.Column="1" Content="&#xE721;" Width="24" Height="22"
                     Padding="2" FontFamily="Segoe MDL2 Assets" FontSize="11" VerticalAlignment="Center"
                     HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                     ToolTip="Search all text lists" Click="SearchButton_Click" />
-            <Button x:Name="SettingsButton" Grid.Column="4" Content="&#xE713;" Width="24" Height="22"
+            <Button x:Name="SettingsButton" Grid.Column="3" Content="&#xE713;" Width="24" Height="22"
                     Padding="2" FontFamily="Segoe MDL2 Assets" FontSize="11" VerticalAlignment="Center"
                     HorizontalContentAlignment="Center"
                     VerticalContentAlignment="Center" ToolTip="Settings"
                     Click="SettingsButton_Click" />
-            <Button x:Name="MinimizeButton" Grid.Column="5" Content="−" Width="22" Padding="2"
+            <Button x:Name="MinimizeButton" Grid.Column="4" Content="−" Width="22" Padding="2"
                     FontSize="12" VerticalAlignment="Center" HorizontalContentAlignment="Center" Tag="Minimize"
                     ToolTip="Minimize" Click="MinimizeButton_Click" />
-            <Button x:Name="CloseButton" Grid.Column="6" Content="×" Width="22" Padding="2"
+            <Button x:Name="CloseButton" Grid.Column="5" Content="×" Width="22" Padding="2"
                     FontSize="12" VerticalAlignment="Center" HorizontalContentAlignment="Center" Tag="Close"
                     ToolTip="Close" Click="CloseButton_Click" />
         </Grid>
@@ -60,14 +56,13 @@
 
             <Border x:Name="FilePanelBorder" Grid.Column="0" Background="{StaticResource PanelBackground}"
                     BorderBrush="{StaticResource PanelBorder}" BorderThickness="1"
-                    CornerRadius="0" Padding="6" SizeChanged="FilePanel_SizeChanged"
+                    CornerRadius="0" Padding="6"
                     AllowDrop="True" DragEnter="FilePanel_DragEnter" DragOver="FilePanel_DragOver"
                     Drop="FilePanel_Drop">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
-                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <StackPanel Margin="1,0,1,4">
                         <TextBlock Text="FILES" FontSize="9" FontWeight="Bold"
@@ -77,9 +72,6 @@
                                   HorizontalScrollBarVisibility="Disabled">
                         <StackPanel x:Name="FileList" />
                     </ScrollViewer>
-                    <TextBlock x:Name="LeftPanelWidthText" Grid.Row="2" Text="W 100"
-                               Margin="1,3,0,0" FontSize="9" Foreground="{StaticResource TextMuted}"
-                               ToolTip="Left panel width in WPF units" />
                 </Grid>
             </Border>
 
@@ -111,7 +103,7 @@
 
         <DockPanel x:Name="BottomBar" Grid.Row="2" Margin="0" LastChildFill="True"
                    Background="Transparent">
-            <TextBlock x:Name="VersionText" DockPanel.Dock="Right" Text="v1.07.12"
+            <TextBlock x:Name="VersionText" DockPanel.Dock="Right" Text="v1.07.13"
                        FontSize="10" Foreground="{StaticResource TextMuted}" VerticalAlignment="Center" />
             <Border x:Name="StatusIndicatorBorder" VerticalAlignment="Stretch"
                     Padding="5,6.5" BorderThickness="0" CornerRadius="0"

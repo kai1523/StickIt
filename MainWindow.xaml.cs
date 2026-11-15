@@ -15,7 +15,7 @@ namespace StickIt;
 
 public partial class MainWindow : Window
 {
-    private const string VersionLabel = "v1.07.12";
+    private const string VersionLabel = "v1.07.13";
     private const int WmNcHitTest = 0x0084;
     private const int HtLeft = 10;
     private const int HtRight = 11;
@@ -43,7 +43,7 @@ public partial class MainWindow : Window
     private string? _recentlyImportedFilePath;
     private string _selectedFileStatus = "";
     private bool _wrapButtons;
-    private bool _fadeWindow = true;
+    private bool _fadeWindow;
     private int _fadeOpacityPercent = 50;
     private bool _isBubbleMode;
     private bool _copyFeedbackActive;
@@ -87,8 +87,6 @@ public partial class MainWindow : Window
         Deactivated += (_, _) => ApplyFadeAppearance();
         UpdateFadeButtonAppearance();
         ApplyFadeAppearance();
-        SizeChanged += (_, _) => UpdateWindowSize();
-
         _refreshTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(350) };
         _refreshTimer.Tick += (_, _) =>
         {
@@ -107,7 +105,6 @@ public partial class MainWindow : Window
 
         Loaded += (_, _) =>
         {
-            UpdateWindowSize();
             LoadTextFiles();
             StartWatchingFolder();
         };
@@ -342,11 +339,6 @@ public partial class MainWindow : Window
 
     private void RefreshButton_Click(object sender, RoutedEventArgs e) => LoadTextFiles();
 
-    private void FilePanel_SizeChanged(object sender, SizeChangedEventArgs e)
-    {
-        LeftPanelWidthText.Text = $"W {Math.Round(e.NewSize.Width):0}";
-    }
-
     private void SettingsButton_Click(object sender, RoutedEventArgs e)
     {
         SettingsDropdownBorder.Visibility = SettingsDropdownBorder.Visibility == Visibility.Visible
@@ -430,11 +422,6 @@ public partial class MainWindow : Window
         DecreaseFadeOpacityButton.ToolTip = $"Decrease faded opacity (currently {_fadeOpacityPercent}%)";
         FadeButton.ToolTip = $"Fade when unfocused · {_fadeOpacityPercent}% surface opacity";
         IncreaseFadeOpacityButton.ToolTip = $"Increase faded opacity (currently {_fadeOpacityPercent}%)";
-    }
-
-    private void UpdateWindowSize()
-    {
-        WindowSizeText.Text = $"{Math.Round(ActualWidth):0} × {Math.Round(ActualHeight):0}";
     }
 
     private void StartWatchingFolder()
@@ -1158,7 +1145,7 @@ public partial class MainWindow : Window
     {
         public string? SelectedFileName { get; set; }
         public bool WrapButtons { get; set; }
-        public bool FadeWindow { get; set; } = true;
+        public bool FadeWindow { get; set; }
         public int FadeOpacityPercent { get; set; } = 50;
         public double Width { get; set; } = 300;
         public double Height { get; set; } = 440;

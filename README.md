@@ -21,11 +21,11 @@ StickIt is a small, always-on-top Windows app that turns lines in nearby text fi
 - Resize the window from any edge or corner.
 - Comment text has no background or indentation.
 - Spacing reference: **2/10** (1 = tightest, 10 = roomiest); 8-unit outer margin, 6–8-unit panel padding, 6-unit panel gap, and 4-unit button gaps.
-- Top bar shows the live window size and places Search, a compact manual refresh icon, and the gear-shaped Settings dropdown together, followed by Minimize and Close. Text-file changes also refresh automatically.
+- Top bar groups Search, a compact manual refresh icon, and the gear-shaped Settings dropdown, followed by Minimize and Close. Text-file changes also refresh automatically.
 - Minimize highlights in muted blue and Close in muted red on hover; both stay neutral otherwise.
 - Comment marker hashes are hidden in the display.
-- Shows the left-panel width at the bottom of the file list; it starts at 67 WPF units. Panel divider and corners are minimal/squared.
-- Settings dropdown contains Wrap and Fade controls. It moves with the window, stays open when its options are clicked, and closes when Settings or anywhere outside the dropdown is clicked. Active toggles turn green. Wrap grows buttons vertically to show their full text. Square −/+ buttons adjust the unfocused surface opacity from 10% to 90% in 10% steps (50% by default); borders and the top bar remain 25 percentage points more opaque. When Fade is enabled, StickIt stays opaque while focused; while unfocused, it fades its surfaces and hides text so only the window silhouette remains. The window stays clickable, and focusing it restores the text. Fade is active by default for development.
+- The resizable left panel starts at 67 WPF units. Panel divider and corners are minimal/squared.
+- Settings dropdown contains Wrap and Fade controls. It moves with the window, stays open when its options are clicked, and closes when Settings or anywhere outside the dropdown is clicked. Active toggles turn green. Wrap grows buttons vertically to show their full text. Square −/+ buttons adjust the unfocused surface opacity from 10% to 90% in 10% steps (50% by default); borders and the top bar remain 25 percentage points more opaque. When Fade is enabled, StickIt stays opaque while focused; while unfocused, it fades its surfaces and hides text so only the window silhouette remains. The window stays clickable, and focusing it restores the text. Fade is off by default.
 - Remembers the selected text file, Wrap and Fade states, Fade opacity, window size and position, and left-panel width between launches. Settings are saved under the current user's Local AppData folder; an off-screen saved position is ignored.
 - Long file and content lists remain scrollable without displaying scrollbars.
 - Copy feedback shows the copied text in the status bar.
@@ -33,7 +33,7 @@ StickIt is a small, always-on-top Windows app that turns lines in nearby text fi
 - Copy confirmation appears in a borderless status bar that matches the top-bar background; successful copy text is highlighted in pale green.
 - The top and bottom bars are slightly thicker, with no gaps between the bars and the main panels.
 - The sticky-note icon is used by the app window and Windows executable.
-- Version: **1.07.12** (Major.Minor.Step).
+- Version: **1.07.13** (Major.Minor.Step).
 
 ## Development
 
@@ -57,4 +57,4 @@ The script reads the version from `StickIt.csproj` and writes the EXE and its sa
 
 ## GitHub releases
 
-Push a version tag such as `v1.07.12` to build a Windows x64 release. GitHub Actions runs the same `publish.ps1` script used for local builds, then attaches both `StickIt.exe` and a ZIP containing the EXE and sample `.txt` files. The workflow is in `.github/workflows/release.yml`.
+Push a version tag such as `v1.07.13` to build a Windows x64 release. GitHub Actions runs the same `publish.ps1` script used for local builds, then attaches both `StickIt.exe` and a ZIP containing the EXE and sample `.txt` files. The workflow is in `.github/workflows/release.yml`.
