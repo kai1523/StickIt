@@ -23,6 +23,7 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Button x:Name="RefreshButton" Content="Refresh" Padding="7,3" FontSize="10" VerticalAlignment="Center"
                     HorizontalContentAlignment="Center"
@@ -30,14 +31,19 @@
             <TextBlock x:Name="WindowSizeText" Grid.Column="1" Text="350 × 500"
                        Margin="7,0,0,0" VerticalAlignment="Center" FontSize="9"
                        Foreground="{StaticResource TextMuted}" />
-            <Button x:Name="SettingsButton" Grid.Column="2" Content="Settings ▾" Width="76"
-                    Padding="5,3" FontSize="10" VerticalAlignment="Center"
+            <Button x:Name="SearchButton" Grid.Column="2" Content="&#xE721;" Width="24" Height="22"
+                    Padding="2" FontFamily="Segoe MDL2 Assets" FontSize="11" VerticalAlignment="Center"
+                    HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                    ToolTip="Search all text lists" Click="SearchButton_Click" />
+            <Button x:Name="SettingsButton" Grid.Column="3" Content="&#xE713;" Width="24" Height="22"
+                    Padding="2" FontFamily="Segoe MDL2 Assets" FontSize="11" VerticalAlignment="Center"
                     HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center" ToolTip="Settings"
                     Click="SettingsButton_Click" />
-            <Button x:Name="MinimizeButton" Grid.Column="3" Content="−" Width="22" Padding="2"
+            <Button x:Name="MinimizeButton" Grid.Column="4" Content="−" Width="22" Padding="2"
                     FontSize="12" VerticalAlignment="Center" HorizontalContentAlignment="Center" Tag="Minimize"
                     ToolTip="Minimize" Click="MinimizeButton_Click" />
-            <Button x:Name="CloseButton" Grid.Column="4" Content="×" Width="22" Padding="2"
+            <Button x:Name="CloseButton" Grid.Column="5" Content="×" Width="22" Padding="2"
                     FontSize="12" VerticalAlignment="Center" HorizontalContentAlignment="Center" Tag="Close"
                     ToolTip="Close" Click="CloseButton_Click" />
         </Grid>
@@ -85,7 +91,6 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <StackPanel Margin="1,0,1,5">
@@ -93,17 +98,7 @@
                                    FontSize="13" FontWeight="SemiBold" Foreground="{StaticResource TextPrimary}"
                                    TextTrimming="CharacterEllipsis" />
                     </StackPanel>
-                    <Grid Grid.Row="1" Margin="0,0,0,5">
-                        <TextBox x:Name="SearchTextBox" Height="23" Padding="5,2"
-                                 FontSize="10" Background="#FF20242C" Foreground="{StaticResource TextPrimary}"
-                                 BorderBrush="{StaticResource PanelBorder}" BorderThickness="1"
-                                 ToolTip="Search comment headings, button labels, and copied text"
-                                 TextChanged="SearchTextBox_TextChanged" />
-                        <TextBlock x:Name="SearchPlaceholderText" Text="Search this list…"
-                                   Margin="7,0,0,0" VerticalAlignment="Center" FontSize="10"
-                                   Foreground="{StaticResource TextMuted}" IsHitTestVisible="False" />
-                    </Grid>
-                    <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Hidden"
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden"
                                   HorizontalScrollBarVisibility="Disabled">
                         <StackPanel x:Name="ContentItems" />
                     </ScrollViewer>
@@ -113,7 +108,7 @@
 
         <DockPanel x:Name="BottomBar" Grid.Row="2" Margin="0" LastChildFill="True"
                    Background="Transparent">
-            <TextBlock x:Name="VersionText" DockPanel.Dock="Right" Text="v1.07.05"
+            <TextBlock x:Name="VersionText" DockPanel.Dock="Right" Text="v1.07.06"
                        FontSize="10" Foreground="{StaticResource TextMuted}" VerticalAlignment="Center" />
             <Border x:Name="StatusIndicatorBorder" VerticalAlignment="Stretch"
                     Padding="5,6.5" BorderThickness="0" CornerRadius="0"
@@ -126,7 +121,7 @@
 
         <Border x:Name="SettingsDropdownBorder" Grid.Row="0" Grid.RowSpan="2"
                 Panel.ZIndex="10" HorizontalAlignment="Right" VerticalAlignment="Top"
-                Margin="0,27,0,0" Width="136" Padding="4"
+                Margin="0,27,44,0" Width="136" Padding="4"
                 Background="{StaticResource PanelBackground}" BorderBrush="{StaticResource PanelBorder}"
                 BorderThickness="1" Visibility="Collapsed">
             <StackPanel>
@@ -149,6 +144,33 @@
                             Click="FadeOpacityButton_Click" />
                 </StackPanel>
             </StackPanel>
+        </Border>
+
+        <Border x:Name="SearchDropdownBorder" Grid.Row="0" Grid.RowSpan="2"
+                Panel.ZIndex="11" HorizontalAlignment="Right" VerticalAlignment="Top"
+                Margin="0,27,68,0" Width="220" Padding="4"
+                Background="{StaticResource PanelBackground}" BorderBrush="{StaticResource PanelBorder}"
+                BorderThickness="1" Visibility="Collapsed">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid>
+                    <TextBox x:Name="SearchTextBox" Height="23" Padding="5,2"
+                             FontSize="10" Background="#FF20242C" Foreground="{StaticResource TextPrimary}"
+                             BorderBrush="{StaticResource PanelBorder}" BorderThickness="1"
+                             ToolTip="Search comments, button labels, and copied text in all lists"
+                             TextChanged="SearchTextBox_TextChanged" />
+                    <TextBlock x:Name="SearchPlaceholderText" Text="Search ..."
+                               Margin="7,0,0,0" VerticalAlignment="Center" FontSize="10"
+                               Foreground="{StaticResource TextMuted}" IsHitTestVisible="False" />
+                </Grid>
+                <Button x:Name="SearchCloseButton" Grid.Column="1" Content="×" Width="22" Height="23"
+                        Margin="3,0,0,0" Padding="0" FontSize="12"
+                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                        ToolTip="Close search and clear results" Click="SearchCloseButton_Click" />
+            </Grid>
         </Border>
       </Grid>
 

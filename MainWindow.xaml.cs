@@ -14,7 +14,7 @@ namespace StickIt;
 
 public partial class MainWindow : Window
 {
-    private const string VersionLabel = "v1.07.05";
+    private const string VersionLabel = "v1.07.06";
     private const int WmNcHitTest = 0x0084;
     private const int HtLeft = 10;
     private const int HtRight = 11;
@@ -260,7 +260,7 @@ public partial class MainWindow : Window
 
     private void TopBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
-        if (RefreshButton.IsMouseOver || SettingsButton.IsMouseOver ||
+        if (RefreshButton.IsMouseOver || SearchButton.IsMouseOver || SettingsButton.IsMouseOver ||
             MinimizeButton.IsMouseOver || CloseButton.IsMouseOver)
             return;
 
@@ -292,6 +292,11 @@ public partial class MainWindow : Window
         ContentPanelBorder.BorderBrush = panelBorder;
         SettingsDropdownBorder.Background = panelBackground;
         SettingsDropdownBorder.BorderBrush = panelBorder;
+        SearchDropdownBorder.Background = panelBackground;
+        SearchDropdownBorder.BorderBrush = panelBorder;
+        SearchTextBox.Background = BrushWithOpacity("#FF20242C", surfaceOpacity);
+        SearchTextBox.BorderBrush = panelBorder;
+        SearchTextBox.Opacity = shouldFade ? 0 : 1;
         var topBarBackground = BrushWithOpacity("#FF111318", chromeOpacity);
         TopBar.Background = topBarBackground;
         BottomBar.Background = topBarBackground;
@@ -342,9 +347,38 @@ public partial class MainWindow : Window
 
     private void SettingsButton_Click(object sender, RoutedEventArgs e)
     {
+        CloseSearchDropdown();
         SettingsDropdownBorder.Visibility = SettingsDropdownBorder.Visibility == Visibility.Visible
             ? Visibility.Collapsed
             : Visibility.Visible;
+    }
+
+    private void SearchButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (SearchDropdownBorder.Visibility == Visibility.Visible)
+        {
+            CloseSearchDropdown();
+            return;
+        }
+
+        SettingsDropdownBorder.Visibility = Visibility.Collapsed;
+        SearchDropdownBorder.Visibility = Visibility.Visible;
+        SearchTextBox.Focus();
+        SearchTextBox.CaretIndex = SearchTextBox.Text.Length;
+    }
+
+    private void SearchCloseButton_Click(object sender, RoutedEventArgs e) => CloseSearchDropdown();
+
+    private void CloseSearchDropdown(bool deferClear = false)
+    {
+        SearchDropdownBorder.Visibility = Visibility.Collapsed;
+        if (SearchTextBox.Text.Length == 0)
+            return;
+
+        if (deferClear)
+            Dispatcher.BeginInvoke(new Action(SearchTextBox.Clear), DispatcherPriority.Background);
+        else
+            SearchTextBox.Clear();
     }
 
     private void MainView_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -353,6 +387,12 @@ public partial class MainWindow : Window
             !SettingsDropdownBorder.IsMouseOver && !SettingsButton.IsMouseOver)
         {
             SettingsDropdownBorder.Visibility = Visibility.Collapsed;
+        }
+
+        if (SearchDropdownBorder.Visibility == Visibility.Visible &&
+            !SearchDropdownBorder.IsMouseOver && !SearchButton.IsMouseOver)
+        {
+            CloseSearchDropdown(deferClear: true);
         }
     }
 
@@ -732,6 +772,7 @@ public partial class MainWindow : Window
         }
 
         SettingsDropdownBorder.Visibility = Visibility.Collapsed;
+        CloseSearchDropdown();
         MainView.Visibility = Visibility.Collapsed;
         BubbleView.Visibility = Visibility.Visible;
         _isBubbleMode = true;

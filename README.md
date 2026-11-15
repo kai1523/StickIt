@@ -10,6 +10,7 @@ StickIt is a small, always-on-top Windows app that turns lines in nearby text fi
 - Right-click a file in the sidebar to open a file actions popup with **Open in editor** (the Windows default `.txt` app) and **Show in Explorer**. It remains open until an action is chosen or the next click occurs elsewhere.
 - Turns ordinary non-blank lines into copy buttons. If a line contains a tab, text before the first tab is copied and the rest is shown as the button label; without a tab, the full line is shown and copied.
 - Search works across all top-level `.txt` files in the app folder, case-insensitively matching comment text, visible button labels, and copied text. Results are grouped by filename. A matching comment shows its whole section up to the next comment; a matching button shows its comment heading as context.
+- Search is opened from a compact magnifier button in the top bar. Closing the popup clears the query and restores the selected list. Settings is represented by a gear icon.
 - Hovering a button previews the text that will be copied, including when the visible button label comes after a tab.
 - Displays `##` to `#####` comment lines as non-clickable notes, with stronger color and type styling at higher levels.
 - Watches the app folder for `.txt` additions, edits, removals, and renames. A Refresh button is also available.
@@ -18,7 +19,7 @@ StickIt is a small, always-on-top Windows app that turns lines in nearby text fi
 - Resize the window from any edge or corner.
 - Comment text has no background or indentation.
 - Spacing reference: **2/10** (1 = tightest, 10 = roomiest); 8-unit outer margin, 6–8-unit panel padding, 6-unit panel gap, and 4-unit button gaps.
-- Top bar shows the live window size and includes Refresh and a Settings dropdown.
+- Top bar shows the live window size and includes Refresh, Search, a gear-shaped Settings dropdown, Minimize, and Close.
 - Minimize highlights in muted blue and Close in muted red on hover; both stay neutral otherwise.
 - Comment marker hashes are hidden in the display.
 - Shows the left-panel width at the bottom of the file list; it starts at 67 WPF units. Panel divider and corners are minimal/squared.
@@ -30,7 +31,7 @@ StickIt is a small, always-on-top Windows app that turns lines in nearby text fi
 - Copy confirmation appears in a borderless status bar that matches the top-bar background; successful copy text is highlighted in pale green.
 - The top and bottom bars are slightly thicker, with no gaps between the bars and the main panels.
 - The sticky-note icon is used by the app window and Windows executable.
-- Version: **1.07.05** (Major.Minor.Step).
+- Version: **1.07.06** (Major.Minor.Step).
 
 ## Development
 
@@ -54,4 +55,4 @@ The script reads the version from `StickIt.csproj` and writes the EXE and its sa
 
 ## GitHub releases
 
-Push a version tag such as `v1.07.05` to build a Windows x64 release. GitHub Actions runs the same `publish.ps1` script used for local builds, then attaches both `StickIt.exe` and a ZIP containing the EXE and sample `.txt` files. The workflow is in `.github/workflows/release.yml`.
+Push a version tag such as `v1.07.06` to build a Windows x64 release. GitHub Actions runs the same `publish.ps1` script used for local builds, then attaches both `StickIt.exe` and a ZIP containing the EXE and sample `.txt` files. The workflow is in `.github/workflows/release.yml`.
