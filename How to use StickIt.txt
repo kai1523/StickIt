@@ -47,7 +47,8 @@ first-part-is-copied	This is the label	and this part stays in the label
 ## StickIt watches the folder and updates after files are added, edited, renamed, or removed.
 ## Click the circular-arrow button between Search and Settings to refresh manually.
 ## Drag a TXT file onto the left panel to copy it into the app folder. Duplicate names receive _2, _3, and higher suffixes.
-## Right-click a filename for Open in editor or Show in Explorer.
+## Right-click a filename for Edit in StickIt, Open in external editor, or Show in Explorer.
+## The in-app editor has Save and Cancel buttons, warns before discarding unsaved changes, and detects external edits before saving.
 ## The selected filename is highlighted in the file list.
 
 ## Copy and window utilities

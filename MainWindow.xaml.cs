@@ -15,7 +15,7 @@ namespace StickIt;
 
 public partial class MainWindow : Window
 {
-    private const string VersionLabel = "v1.07.14";
+    private const string VersionLabel = "v1.07.15";
     private const int WmNcHitTest = 0x0084;
     private const int HtLeft = 10;
     private const int HtRight = 11;
@@ -579,6 +579,25 @@ public partial class MainWindow : Window
         catch (Exception ex) when (ex is System.ComponentModel.Win32Exception or InvalidOperationException or IOException or UnauthorizedAccessException)
         {
             StatusText.Text = $"Could not open file: {ex.Message}";
+        }
+    }
+
+    private void EditInStickItButton_Click(object sender, RoutedEventArgs e)
+    {
+        var path = _contextFilePath;
+        FileActionsPopup.IsOpen = false;
+        if (path is null)
+            return;
+
+        try
+        {
+            var editor = new TextEditorWindow(path) { Owner = this };
+            if (editor.ShowDialog() == true)
+                LoadTextFiles();
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or ArgumentException)
+        {
+            StatusText.Text = $"Could not open file in StickIt: {ex.Message}";
         }
     }
 

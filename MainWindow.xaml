@@ -103,7 +103,7 @@
 
         <DockPanel x:Name="BottomBar" Grid.Row="2" Margin="0" LastChildFill="True"
                    Background="Transparent">
-            <TextBlock x:Name="VersionText" DockPanel.Dock="Right" Text="v1.07.14"
+            <TextBlock x:Name="VersionText" DockPanel.Dock="Right" Text="v1.07.15"
                        FontSize="10" Foreground="{StaticResource TextMuted}" VerticalAlignment="Center" />
             <Border x:Name="StatusIndicatorBorder" VerticalAlignment="Stretch"
                     Padding="5,6.5" BorderThickness="0" CornerRadius="0"
@@ -203,10 +203,13 @@
 
       <primitives:Popup x:Name="FileActionsPopup" Placement="Right" StaysOpen="False"
                         AllowsTransparency="True">
-        <Border Width="150" Padding="4" Background="{StaticResource PanelBackground}"
+        <Border Width="164" Padding="4" Background="{StaticResource PanelBackground}"
                 BorderBrush="{StaticResource PanelBorder}" BorderThickness="1">
             <StackPanel>
-                <Button x:Name="OpenInEditorButton" Content="Open in editor" Padding="6,4"
+                <Button x:Name="EditInStickItButton" Content="Edit in StickIt" Padding="6,4"
+                        Margin="0,0,0,3" FontSize="10" HorizontalContentAlignment="Left"
+                        Click="EditInStickItButton_Click" />
+                <Button x:Name="OpenInEditorButton" Content="Open in external editor" Padding="6,4"
                         Margin="0,0,0,3" FontSize="10" HorizontalContentAlignment="Left"
                         Click="OpenInEditorButton_Click" />
                 <Button x:Name="ShowInExplorerButton" Content="Show in Explorer" Padding="6,4"
