@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Documents;
 using System.Windows.Interop;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -14,7 +15,7 @@ namespace StickIt;
 
 public partial class MainWindow : Window
 {
-    private const string VersionLabel = "v1.07.07";
+    private const string VersionLabel = "v1.07.08";
     private const int WmNcHitTest = 0x0084;
     private const int HtLeft = 10;
     private const int HtRight = 11;
@@ -891,17 +892,18 @@ public partial class MainWindow : Window
         return sections;
     }
 
-    private Button CreateCopyButton(ListEntry entry)
+    private Button CreateCopyButton(ListEntry entry, string? searchQuery = null, bool copiedValueOnlyMatch = false)
     {
+        var label = new TextBlock
+        {
+            TextTrimming = _wrapButtons ? TextTrimming.None : TextTrimming.CharacterEllipsis,
+            TextWrapping = _wrapButtons ? TextWrapping.Wrap : TextWrapping.NoWrap,
+            VerticalAlignment = VerticalAlignment.Center
+        };
+        SetHighlightedText(label, entry.Text, searchQuery, copiedValueOnlyMatch);
         var button = new Button
         {
-            Content = new TextBlock
-            {
-                Text = entry.Text,
-                TextTrimming = _wrapButtons ? TextTrimming.None : TextTrimming.CharacterEllipsis,
-                TextWrapping = _wrapButtons ? TextWrapping.Wrap : TextWrapping.NoWrap,
-                VerticalAlignment = VerticalAlignment.Center
-            },
+            Content = label,
             HorizontalContentAlignment = HorizontalAlignment.Stretch,
             HorizontalAlignment = HorizontalAlignment.Stretch,
             ToolTip = entry.CopyText,
@@ -963,14 +965,17 @@ public partial class MainWindow : Window
 
                 if (section.Heading is { } visibleHeading)
                 {
-                    ContentItems.Children.Add(CreateComment(visibleHeading.Text, visibleHeading.Level));
+                    ContentItems.Children.Add(CreateComment(visibleHeading.Text, visibleHeading.Level, query));
                     commentCount++;
                 }
 
                 var visibleButtons = headingMatches ? section.Buttons : matchingButtons;
                 foreach (var entry in visibleButtons)
                 {
-                    ContentItems.Children.Add(CreateCopyButton(entry));
+                    var labelMatches = entry.Text.Contains(query, StringComparison.OrdinalIgnoreCase);
+                    var copyValueMatches = entry.CopyText.Contains(query, StringComparison.OrdinalIgnoreCase);
+                    ContentItems.Children.Add(CreateCopyButton(entry, query,
+                        copiedValueOnlyMatch: copyValueMatches && !labelMatches));
                     buttonCount++;
                 }
             }
@@ -1030,7 +1035,7 @@ public partial class MainWindow : Window
         return true;
     }
 
-    private static FrameworkElement CreateComment(string text, int level)
+    private static FrameworkElement CreateComment(string text, int level, string? searchQuery = null)
     {
         var foreground = level switch
         {
@@ -1040,15 +1045,60 @@ public partial class MainWindow : Window
             _ => "#FFFFA0A8"
         };
         var fontSize = level switch { 2 => 11.0, 3 => 12.0, 4 => 13.0, _ => 14.0 };
-        return new TextBlock
+        var comment = new TextBlock
         {
-            Text = text,
             TextWrapping = TextWrapping.Wrap,
             FontSize = fontSize,
             FontWeight = level >= 4 ? FontWeights.SemiBold : FontWeights.Normal,
             Foreground = Brush(foreground),
             Margin = new Thickness(0, 1, 0, 6)
         };
+        SetHighlightedText(comment, text, searchQuery);
+        return comment;
+    }
+
+    private static void SetHighlightedText(TextBlock textBlock, string text, string? query, bool highlightWholeText = false)
+    {
+        if (string.IsNullOrEmpty(query) || (!highlightWholeText && !text.Contains(query, StringComparison.OrdinalIgnoreCase)))
+        {
+            textBlock.Text = text;
+            return;
+        }
+
+        var highlightBackground = Brush("#FF3B4D68");
+        var highlightForeground = Brush("#FFF0F5FF");
+        if (highlightWholeText)
+        {
+            textBlock.Inlines.Add(new Run(text)
+            {
+                Background = highlightBackground,
+                Foreground = highlightForeground,
+                FontWeight = FontWeights.SemiBold
+            });
+            return;
+        }
+
+        var position = 0;
+        while (position < text.Length)
+        {
+            var matchIndex = text.IndexOf(query, position, StringComparison.OrdinalIgnoreCase);
+            if (matchIndex < 0)
+            {
+                textBlock.Inlines.Add(new Run(text[position..]));
+                break;
+            }
+
+            if (matchIndex > position)
+                textBlock.Inlines.Add(new Run(text[position..matchIndex]));
+
+            textBlock.Inlines.Add(new Run(text.Substring(matchIndex, query.Length))
+            {
+                Background = highlightBackground,
+                Foreground = highlightForeground,
+                FontWeight = FontWeights.SemiBold
+            });
+            position = matchIndex + query.Length;
+        }
     }
 
     private static SolidColorBrush Brush(string color) => new((Color)ColorConverter.ConvertFromString(color));
