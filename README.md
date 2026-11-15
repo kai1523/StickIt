@@ -33,7 +33,7 @@ StickIt is a small, always-on-top Windows app that turns lines in nearby text fi
 - Copy confirmation appears in a borderless status bar that matches the top-bar background; successful copy text is highlighted in pale green.
 - The top and bottom bars are slightly thicker, with no gaps between the bars and the main panels.
 - The sticky-note icon is used by the app window and Windows executable.
-- Version: **1.07.13** (Major.Minor.Step).
+- Version: **1.07.14** (Major.Minor.Step).
 
 ## Development
 
@@ -57,4 +57,4 @@ The script reads the version from `StickIt.csproj` and writes the EXE and its sa
 
 ## GitHub releases
 
-Push a version tag such as `v1.07.13` to build a Windows x64 release. GitHub Actions runs the same `publish.ps1` script used for local builds, then attaches both `StickIt.exe` and a ZIP containing the EXE and sample `.txt` files. The workflow is in `.github/workflows/release.yml`.
+Push a version tag such as `v1.07.14` to build a Windows x64 release. GitHub Actions runs the same `publish.ps1` script used for local builds, then attaches both `StickIt.exe` and a ZIP containing the EXE and sample `.txt` files. The workflow is in `.github/workflows/release.yml`.

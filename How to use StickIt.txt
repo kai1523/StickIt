@@ -1,0 +1,67 @@
+## Welcome to StickIt
+## This guide is also a live demo: ordinary lines become buttons you can click to copy.
+## Instructions and utility descriptions are comments, so they are not clickable.
+
+## Text file formatting
+## Every nonblank line that does not start with at least two # characters is a copy button.
+## A line without a TAB is displayed and copied exactly as written.
+Copy this entire line when clicked
+## Blank lines are ignored and create no button.
+## Spaces on button lines are preserved in the copied text.
+## A single leading # is not a comment marker; it remains part of a clickable line.
+#This is a button because there is only one leading hash
+
+## TAB-separated button format
+## Put one TAB between the copied value and the button label.
+## Text before the first TAB is copied; text after it is displayed as the button label.
+demo-copy-value-123	Click to copy the demo value
+## Only the first TAB separates the copy value from the label; later TABs stay in the label.
+first-part-is-copied	This is the label	and this part stays in the label
+## Hover a labeled button to preview its copied value.
+
+## Comment heading levels
+## Prefix a comment with 2–5 # characters (leading spaces are okay). The # markers are hidden in the app.
+## Comment lines are unclickable, unindented, and have no background.
+## A comment starts a section that continues until the next comment.
+## Level 1 — two hashes, muted neutral blue-gray, smallest comment text.
+## This is a level 1 comment. It has no strong accent.
+### Level 2 — three hashes, teal accent.
+### This is a level 2 comment with a teal accent.
+#### Level 3 — four hashes, lavender accent and larger text.
+#### This is a level 3 comment with a lavender accent.
+##### Level 4 — five hashes, coral-pink accent, largest and strongest style.
+##### This is a level 4 comment with the strongest accent.
+## More than five leading hashes use the highest comment style.
+
+## Search utility
+## Click the magnifying glass in the top bar to open or hide the search field.
+## Search spans every top-level TXT file beside StickIt; matches include comments, button labels, and copied values.
+## Results are grouped by filename. A matching comment shows its section; a matching button shows its comment heading for context.
+## Matching text is highlighted. A button matched only by its copied value gets a full-label accent.
+## The magnifier stays blue while a query is active, even when the field is hidden.
+## Click the magnifier again to hide or reopen the field without clearing the query.
+## Click the × in the search field to clear the query and restore the selected file.
+
+## File list and refresh utilities
+## The left panel lists top-level TXT files from the app folder. Click a filename to show that file's buttons.
+## StickIt watches the folder and updates after files are added, edited, renamed, or removed.
+## Click the circular-arrow button between Search and Settings to refresh manually.
+## Drag a TXT file onto the left panel to copy it into the app folder. Duplicate names receive _2, _3, and higher suffixes.
+## Right-click a filename for Open in editor or Show in Explorer.
+## The selected filename is highlighted in the file list.
+
+## Copy and window utilities
+## Click any button to copy its value. The bottom status bar confirms what was copied.
+## The window stays on top. Drag an empty part of the top bar to move it.
+## The − button minimizes StickIt; the × button at the top right closes it.
+## Resize the window from any edge or corner. Window size, position, and left-panel width are remembered.
+## Click the StickIt button at the top of the file panel to collapse into a 68 × 68 sticky-note bubble.
+## Drag the upper half of the bubble to move it. Click the lower half to restore the main window.
+## The version number appears at the bottom right.
+
+## Settings utilities
+## Click the gear icon to open Settings. Click the gear or outside the dropdown to close it.
+## Wrap makes long button labels grow vertically so their full text can be read.
+## Fade makes the unfocused window translucent and hides its text; focusing the window restores its contents.
+## Fade is off by default. The − and + buttons lower or raise unfocused opacity in 10% steps.
+## Settings remember the selected file, Wrap and Fade, opacity, window size and position, and left-panel width.
