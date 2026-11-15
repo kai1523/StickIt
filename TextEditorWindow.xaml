@@ -32,11 +32,11 @@
                        FontSize="10" Foreground="{StaticResource TextMuted}"
                        VerticalAlignment="Center" />
             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-                <Button Content="Cancel" Width="76" Padding="7,4" Margin="0,0,6,0"
-                        FontSize="11" HorizontalContentAlignment="Center"
+                <Button Content="Cancel" Width="76" Height="28" Padding="7,4" Margin="0,0,6,0"
+                        FontSize="11" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                         Click="CancelButton_Click" />
-                <Button x:Name="SaveButton" Content="Save" Width="76" Padding="7,4"
-                        FontSize="11" HorizontalContentAlignment="Center"
+                <Button x:Name="SaveButton" Content="Save" Width="76" Height="28" Padding="7,4" Margin="0"
+                        FontSize="11" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                         Click="SaveButton_Click" />
             </StackPanel>
         </DockPanel>
