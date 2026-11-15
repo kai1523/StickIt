@@ -14,7 +14,7 @@ namespace StickIt;
 
 public partial class MainWindow : Window
 {
-    private const string VersionLabel = "v1.07.04";
+    private const string VersionLabel = "v1.07.05";
     private const int WmNcHitTest = 0x0084;
     private const int HtLeft = 10;
     private const int HtRight = 11;
@@ -793,6 +793,13 @@ public partial class MainWindow : Window
         SearchPlaceholderText.Visibility = string.IsNullOrEmpty(SearchTextBox.Text)
             ? Visibility.Visible
             : Visibility.Collapsed;
+        var query = SearchTextBox.Text.Trim();
+        if (query.Length > 0)
+        {
+            RenderGlobalSearch(query);
+            return;
+        }
+
         if (_selectedFilePath is null)
             return;
 
@@ -809,6 +816,39 @@ public partial class MainWindow : Window
             return;
         }
 
+        var sections = ParseSections(lines);
+        var buttonCount = 0;
+        var commentCount = 0;
+        foreach (var section in sections)
+        {
+            if (section.Heading is { } heading)
+            {
+                ContentItems.Children.Add(CreateComment(heading.Text, heading.Level));
+                commentCount++;
+            }
+
+            foreach (var entry in section.Buttons)
+            {
+                ContentItems.Children.Add(CreateCopyButton(entry));
+                buttonCount++;
+            }
+        }
+
+        if (buttonCount == 0 && commentCount == 0)
+            ContentItems.Children.Add(new TextBlock
+            {
+                Text = "This file has no lines to show yet.",
+                Margin = new Thickness(2, 4, 2, 0),
+                FontSize = 13,
+                Foreground = Brush("#FF929BA9")
+            });
+
+        _selectedFileStatus = $"{buttonCount} button(s) · {commentCount} comment(s) · wrap {(_wrapButtons ? "on" : "off")}";
+        StatusText.Text = _selectedFileStatus;
+    }
+
+    private List<ListSection> ParseSections(IEnumerable<string> lines)
+    {
         var sections = new List<ListSection>();
         foreach (var line in lines)
         {
@@ -824,71 +864,122 @@ public partial class MainWindow : Window
             var tabIndex = line.IndexOf('\t');
             var copyText = tabIndex < 0 ? line : line[..tabIndex];
             var buttonLabel = tabIndex < 0 ? line : line[(tabIndex + 1)..];
-            if (sections.Count == 0 || sections[^1].Heading is not null)
+            if (sections.Count == 0)
                 sections.Add(new ListSection(null));
             sections[^1].Buttons.Add(new ListEntry(false, 0, buttonLabel, copyText));
         }
+        return sections;
+    }
 
-        var query = SearchTextBox.Text.Trim();
-        var searching = query.Length > 0;
+    private Button CreateCopyButton(ListEntry entry)
+    {
+        var button = new Button
+        {
+            Content = new TextBlock
+            {
+                Text = entry.Text,
+                TextTrimming = _wrapButtons ? TextTrimming.None : TextTrimming.CharacterEllipsis,
+                TextWrapping = _wrapButtons ? TextWrapping.Wrap : TextWrapping.NoWrap,
+                VerticalAlignment = VerticalAlignment.Center
+            },
+            HorizontalContentAlignment = HorizontalAlignment.Stretch,
+            HorizontalAlignment = HorizontalAlignment.Stretch,
+            ToolTip = entry.CopyText,
+            Tag = entry.CopyText
+        };
+        button.Click += CopyButton_Click;
+        return button;
+    }
+
+    private void RenderGlobalSearch(string query)
+    {
+        SelectedFileTitle.Text = "Search results across all lists";
+        string[] filePaths;
+        try
+        {
+            filePaths = Directory.EnumerateFiles(_appFolder, "*.txt", SearchOption.TopDirectoryOnly)
+                .OrderBy(path => Path.GetFileName(path), StringComparer.CurrentCultureIgnoreCase)
+                .ToArray();
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+        {
+            _selectedFileStatus = "Could not search the app folder.";
+            StatusText.Text = _selectedFileStatus;
+            return;
+        }
+
         var buttonCount = 0;
         var commentCount = 0;
-        foreach (var section in sections)
+        var matchedFileCount = 0;
+        foreach (var filePath in filePaths)
         {
-            var headingMatches = searching && section.Heading is { } heading
-                && heading.Text.Contains(query, StringComparison.OrdinalIgnoreCase);
-            var matchingButtons = searching
-                ? section.Buttons.Where(entry =>
-                    entry.Text.Contains(query, StringComparison.OrdinalIgnoreCase)
-                    || entry.CopyText.Contains(query, StringComparison.OrdinalIgnoreCase)).ToList()
-                : section.Buttons;
-            var showSection = !searching || headingMatches || matchingButtons.Count > 0;
-            if (!showSection)
-                continue;
-
-            if (section.Heading is { } visibleHeading && (!searching || headingMatches || matchingButtons.Count > 0))
+            List<ListSection> sections;
+            try
             {
-                ContentItems.Children.Add(CreateComment(visibleHeading.Text, visibleHeading.Level));
-                commentCount++;
+                sections = ParseSections(File.ReadAllLines(filePath));
+            }
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+            {
+                continue;
             }
 
-            var visibleButtons = !searching || headingMatches ? section.Buttons : matchingButtons;
-            foreach (var entry in visibleButtons)
+            var fileHasResults = false;
+            foreach (var section in sections)
             {
-                var button = new Button
+                var headingMatches = section.Heading is { } heading
+                    && heading.Text.Contains(query, StringComparison.OrdinalIgnoreCase);
+                var matchingButtons = section.Buttons.Where(entry =>
+                    entry.Text.Contains(query, StringComparison.OrdinalIgnoreCase)
+                    || entry.CopyText.Contains(query, StringComparison.OrdinalIgnoreCase)).ToList();
+                if (!headingMatches && matchingButtons.Count == 0)
+                    continue;
+
+                if (!fileHasResults)
                 {
-                    Content = new TextBlock
-                    {
-                        Text = entry.Text,
-                        TextTrimming = _wrapButtons ? TextTrimming.None : TextTrimming.CharacterEllipsis,
-                        TextWrapping = _wrapButtons ? TextWrapping.Wrap : TextWrapping.NoWrap,
-                        VerticalAlignment = VerticalAlignment.Center
-                    },
-                    HorizontalContentAlignment = HorizontalAlignment.Stretch,
-                    HorizontalAlignment = HorizontalAlignment.Stretch,
-                    ToolTip = entry.CopyText,
-                    Tag = entry.CopyText
-                };
-                button.Click += CopyButton_Click;
-                ContentItems.Children.Add(button);
-                buttonCount++;
+                    ContentItems.Children.Add(CreateFileResultHeader(Path.GetFileName(filePath)));
+                    matchedFileCount++;
+                    fileHasResults = true;
+                }
+
+                if (section.Heading is { } visibleHeading)
+                {
+                    ContentItems.Children.Add(CreateComment(visibleHeading.Text, visibleHeading.Level));
+                    commentCount++;
+                }
+
+                var visibleButtons = headingMatches ? section.Buttons : matchingButtons;
+                foreach (var entry in visibleButtons)
+                {
+                    ContentItems.Children.Add(CreateCopyButton(entry));
+                    buttonCount++;
+                }
             }
         }
 
-        if (buttonCount == 0 && commentCount == 0)
+        if (matchedFileCount == 0)
             ContentItems.Children.Add(new TextBlock
             {
-                Text = searching ? $"No matches for ‘{query}’." : "This file has no lines to show yet.",
+                Text = $"No matches for ‘{query}’. Enter a word from any loaded list.",
                 Margin = new Thickness(2, 4, 2, 0),
                 FontSize = 13,
-                Foreground = Brush("#FF929BA9")
+                Foreground = Brush("#FF929BA9"),
+                TextWrapping = TextWrapping.Wrap
             });
 
-        _selectedFileStatus = searching
-            ? $"{buttonCount} button(s) · {commentCount} comment(s) shown · search"
-            : $"{buttonCount} button(s) · {commentCount} comment(s) · wrap {(_wrapButtons ? "on" : "off")}";
+        _selectedFileStatus = $"{buttonCount} button(s) · {commentCount} comment(s) · {matchedFileCount} file(s) matched";
         StatusText.Text = _selectedFileStatus;
     }
+
+    private static FrameworkElement CreateFileResultHeader(string fileName) => new TextBlock
+    {
+        Text = fileName,
+        TextTrimming = TextTrimming.CharacterEllipsis,
+        FontSize = 10,
+        FontWeight = FontWeights.SemiBold,
+        Foreground = Brush("#FF8FA6D8"),
+        Margin = new Thickness(0, 5, 0, 3),
+        ToolTip = fileName
+    };
 
     private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
     {
