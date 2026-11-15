@@ -4,7 +4,8 @@
         xmlns:primitives="clr-namespace:System.Windows.Controls.Primitives;assembly=PresentationFramework"
         Title="StickIt" Width="300" Height="440" MinWidth="300" MinHeight="320"
         Topmost="True" ResizeMode="CanResize" WindowStyle="None" AllowsTransparency="True"
-        WindowStartupLocation="CenterScreen" Background="#01000000" FontFamily="Segoe UI">
+        WindowStartupLocation="CenterScreen" Background="#01000000" FontFamily="Segoe UI"
+        Icon="pack://application:,,,/sticky-note.ico">
     <!-- Layered windows pass mouse input through zero-alpha pixels; keep the resize margin barely opaque. -->
     <Grid Background="#01000000">
       <Grid x:Name="MainView" Margin="8" PreviewMouseDown="MainView_PreviewMouseDown">
@@ -101,7 +102,7 @@
 
         <DockPanel x:Name="BottomBar" Grid.Row="2" Margin="0" LastChildFill="True"
                    Background="Transparent">
-            <TextBlock x:Name="VersionText" DockPanel.Dock="Right" Text="v1.07.01"
+            <TextBlock x:Name="VersionText" DockPanel.Dock="Right" Text="v1.07.02"
                        FontSize="10" Foreground="{StaticResource TextMuted}" VerticalAlignment="Center" />
             <Border x:Name="StatusIndicatorBorder" VerticalAlignment="Stretch"
                     Padding="5,6.5" BorderThickness="0" CornerRadius="0"

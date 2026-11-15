@@ -27,7 +27,8 @@ StickIt is a small, always-on-top Windows app that turns lines in nearby text fi
 - The left panel includes a compact, centered StickIt button that collapses the app into a draggable 68 × 68 square pastel sticky-note bubble. Its draggable top half is centered over the StickIt button; click its lower half to restore the main window at its original size, with the empty center of the top bar aligned to the restore button.
 - Copy confirmation appears in a borderless status bar that matches the top-bar background; successful copy text is highlighted in pale green.
 - The top and bottom bars are slightly thicker, with no gaps between the bars and the main panels.
-- Version: **1.07.01** (Major.Minor.Step).
+- The sticky-note icon is used by the app window and Windows executable.
+- Version: **1.07.02** (Major.Minor.Step).
 
 ## Development
 
@@ -51,4 +52,4 @@ The script reads the version from `StickIt.csproj` and writes the EXE and its sa
 
 ## GitHub releases
 
-Push a version tag such as `v1.07.01` to build a Windows x64 release. GitHub Actions runs the same `publish.ps1` script used for local builds, then attaches both `StickIt.exe` and a ZIP containing the EXE and sample `.txt` files. The workflow is in `.github/workflows/release.yml`.
+Push a version tag such as `v1.07.02` to build a Windows x64 release. GitHub Actions runs the same `publish.ps1` script used for local builds, then attaches both `StickIt.exe` and a ZIP containing the EXE and sample `.txt` files. The workflow is in `.github/workflows/release.yml`.
