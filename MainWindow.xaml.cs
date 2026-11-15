@@ -14,7 +14,7 @@ namespace StickIt;
 
 public partial class MainWindow : Window
 {
-    private const string VersionLabel = "v1.07.02";
+    private const string VersionLabel = "v1.07.03";
     private const int WmNcHitTest = 0x0084;
     private const int HtLeft = 10;
     private const int HtRight = 11;
@@ -820,19 +820,22 @@ public partial class MainWindow : Window
                 continue;
             }
 
+            var tabIndex = line.IndexOf('\t');
+            var copyText = tabIndex < 0 ? line : line[..tabIndex];
+            var buttonLabel = tabIndex < 0 ? line : line[(tabIndex + 1)..];
             var button = new Button
             {
                 Content = new TextBlock
                 {
-                    Text = line,
+                    Text = buttonLabel,
                     TextTrimming = _wrapButtons ? TextTrimming.None : TextTrimming.CharacterEllipsis,
                     TextWrapping = _wrapButtons ? TextWrapping.Wrap : TextWrapping.NoWrap,
                     VerticalAlignment = VerticalAlignment.Center
                 },
                 HorizontalContentAlignment = HorizontalAlignment.Stretch,
                 HorizontalAlignment = HorizontalAlignment.Stretch,
-                ToolTip = line,
-                Tag = line
+                ToolTip = buttonLabel,
+                Tag = copyText
             };
             button.Click += CopyButton_Click;
             ContentItems.Children.Add(button);
