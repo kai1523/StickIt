@@ -25,8 +25,10 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Button x:Name="RefreshButton" Content="Refresh" Padding="7,3" FontSize="10" VerticalAlignment="Center"
-                    HorizontalContentAlignment="Center"
+            <Button x:Name="RefreshButton" Content="&#xE72C;" Width="24" Height="22"
+                    Padding="2" FontFamily="Segoe MDL2 Assets" FontSize="11" VerticalAlignment="Center"
+                    HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                    ToolTip="Refresh text lists"
                     Click="RefreshButton_Click" />
             <TextBlock x:Name="WindowSizeText" Grid.Column="1" Text="350 × 500"
                        Margin="7,0,0,0" VerticalAlignment="Center" FontSize="9"
@@ -108,7 +110,7 @@
 
         <DockPanel x:Name="BottomBar" Grid.Row="2" Margin="0" LastChildFill="True"
                    Background="Transparent">
-            <TextBlock x:Name="VersionText" DockPanel.Dock="Right" Text="v1.07.09"
+            <TextBlock x:Name="VersionText" DockPanel.Dock="Right" Text="v1.07.10"
                        FontSize="10" Foreground="{StaticResource TextMuted}" VerticalAlignment="Center" />
             <Border x:Name="StatusIndicatorBorder" VerticalAlignment="Stretch"
                     Padding="5,6.5" BorderThickness="0" CornerRadius="0"

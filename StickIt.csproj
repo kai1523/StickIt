@@ -8,9 +8,9 @@
     <AssemblyName>StickIt</AssemblyName>
     <RootNamespace>StickIt</RootNamespace>
     <ApplicationIcon>sticky-note.ico</ApplicationIcon>
-    <Version>1.7.9</Version>
-    <AssemblyVersion>1.7.9.0</AssemblyVersion>
-    <FileVersion>1.7.9.0</FileVersion>
+    <Version>1.7.10</Version>
+    <AssemblyVersion>1.7.10.0</AssemblyVersion>
+    <FileVersion>1.7.10.0</FileVersion>
     <Product>StickIt</Product>
     <Description>Floating text snippets from the app folder.</Description>
     <PublishSingleFile>true</PublishSingleFile>
