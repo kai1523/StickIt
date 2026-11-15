@@ -14,7 +14,7 @@ namespace StickIt;
 
 public partial class MainWindow : Window
 {
-    private const string VersionLabel = "v1.07.03";
+    private const string VersionLabel = "v1.07.04";
     private const int WmNcHitTest = 0x0084;
     private const int HtLeft = 10;
     private const int HtRight = 11;
@@ -790,6 +790,9 @@ public partial class MainWindow : Window
     private void RenderSelectedFile()
     {
         ContentItems.Children.Clear();
+        SearchPlaceholderText.Visibility = string.IsNullOrEmpty(SearchTextBox.Text)
+            ? Visibility.Visible
+            : Visibility.Collapsed;
         if (_selectedFilePath is null)
             return;
 
@@ -806,8 +809,7 @@ public partial class MainWindow : Window
             return;
         }
 
-        var buttonCount = 0;
-        var commentCount = 0;
+        var sections = new List<ListSection>();
         foreach (var line in lines)
         {
             if (string.IsNullOrWhiteSpace(line))
@@ -815,44 +817,87 @@ public partial class MainWindow : Window
 
             if (TryParseComment(line, out var level, out var commentText))
             {
-                ContentItems.Children.Add(CreateComment(commentText, level));
-                commentCount++;
+                sections.Add(new ListSection(new ListEntry(true, level, commentText, "")));
                 continue;
             }
 
             var tabIndex = line.IndexOf('\t');
             var copyText = tabIndex < 0 ? line : line[..tabIndex];
             var buttonLabel = tabIndex < 0 ? line : line[(tabIndex + 1)..];
-            var button = new Button
+            if (sections.Count == 0 || sections[^1].Heading is not null)
+                sections.Add(new ListSection(null));
+            sections[^1].Buttons.Add(new ListEntry(false, 0, buttonLabel, copyText));
+        }
+
+        var query = SearchTextBox.Text.Trim();
+        var searching = query.Length > 0;
+        var buttonCount = 0;
+        var commentCount = 0;
+        foreach (var section in sections)
+        {
+            var headingMatches = searching && section.Heading is { } heading
+                && heading.Text.Contains(query, StringComparison.OrdinalIgnoreCase);
+            var matchingButtons = searching
+                ? section.Buttons.Where(entry =>
+                    entry.Text.Contains(query, StringComparison.OrdinalIgnoreCase)
+                    || entry.CopyText.Contains(query, StringComparison.OrdinalIgnoreCase)).ToList()
+                : section.Buttons;
+            var showSection = !searching || headingMatches || matchingButtons.Count > 0;
+            if (!showSection)
+                continue;
+
+            if (section.Heading is { } visibleHeading && (!searching || headingMatches || matchingButtons.Count > 0))
             {
-                Content = new TextBlock
+                ContentItems.Children.Add(CreateComment(visibleHeading.Text, visibleHeading.Level));
+                commentCount++;
+            }
+
+            var visibleButtons = !searching || headingMatches ? section.Buttons : matchingButtons;
+            foreach (var entry in visibleButtons)
+            {
+                var button = new Button
                 {
-                    Text = buttonLabel,
-                    TextTrimming = _wrapButtons ? TextTrimming.None : TextTrimming.CharacterEllipsis,
-                    TextWrapping = _wrapButtons ? TextWrapping.Wrap : TextWrapping.NoWrap,
-                    VerticalAlignment = VerticalAlignment.Center
-                },
-                HorizontalContentAlignment = HorizontalAlignment.Stretch,
-                HorizontalAlignment = HorizontalAlignment.Stretch,
-                ToolTip = buttonLabel,
-                Tag = copyText
-            };
-            button.Click += CopyButton_Click;
-            ContentItems.Children.Add(button);
-            buttonCount++;
+                    Content = new TextBlock
+                    {
+                        Text = entry.Text,
+                        TextTrimming = _wrapButtons ? TextTrimming.None : TextTrimming.CharacterEllipsis,
+                        TextWrapping = _wrapButtons ? TextWrapping.Wrap : TextWrapping.NoWrap,
+                        VerticalAlignment = VerticalAlignment.Center
+                    },
+                    HorizontalContentAlignment = HorizontalAlignment.Stretch,
+                    HorizontalAlignment = HorizontalAlignment.Stretch,
+                    ToolTip = entry.CopyText,
+                    Tag = entry.CopyText
+                };
+                button.Click += CopyButton_Click;
+                ContentItems.Children.Add(button);
+                buttonCount++;
+            }
         }
 
         if (buttonCount == 0 && commentCount == 0)
             ContentItems.Children.Add(new TextBlock
             {
-                Text = "This file has no lines to show yet.",
+                Text = searching ? $"No matches for ‘{query}’." : "This file has no lines to show yet.",
                 Margin = new Thickness(2, 4, 2, 0),
                 FontSize = 13,
                 Foreground = Brush("#FF929BA9")
             });
 
-        _selectedFileStatus = $"{buttonCount} button(s) · {commentCount} comment(s) · wrap {(_wrapButtons ? "on" : "off")}";
+        _selectedFileStatus = searching
+            ? $"{buttonCount} button(s) · {commentCount} comment(s) shown · search"
+            : $"{buttonCount} button(s) · {commentCount} comment(s) · wrap {(_wrapButtons ? "on" : "off")}";
         StatusText.Text = _selectedFileStatus;
+    }
+
+    private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        if (SearchPlaceholderText is not null)
+            SearchPlaceholderText.Visibility = string.IsNullOrEmpty(SearchTextBox.Text)
+                ? Visibility.Visible
+                : Visibility.Collapsed;
+        if (ContentItems is not null)
+            RenderSelectedFile();
     }
 
     private static bool TryParseComment(string line, out int level, out string text)
@@ -922,6 +967,14 @@ public partial class MainWindow : Window
         {
             StatusText.Text = "Clipboard is busy. Click again to retry.";
         }
+    }
+
+    private sealed record ListEntry(bool IsComment, int Level, string Text, string CopyText);
+
+    private sealed class ListSection(ListEntry? heading)
+    {
+        public ListEntry? Heading { get; } = heading;
+        public List<ListEntry> Buttons { get; } = [];
     }
 
     private sealed class AppSettings

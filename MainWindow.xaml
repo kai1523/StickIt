@@ -85,6 +85,7 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <StackPanel Margin="1,0,1,5">
@@ -92,7 +93,17 @@
                                    FontSize="13" FontWeight="SemiBold" Foreground="{StaticResource TextPrimary}"
                                    TextTrimming="CharacterEllipsis" />
                     </StackPanel>
-                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden"
+                    <Grid Grid.Row="1" Margin="0,0,0,5">
+                        <TextBox x:Name="SearchTextBox" Height="23" Padding="5,2"
+                                 FontSize="10" Background="#FF20242C" Foreground="{StaticResource TextPrimary}"
+                                 BorderBrush="{StaticResource PanelBorder}" BorderThickness="1"
+                                 ToolTip="Search comment headings, button labels, and copied text"
+                                 TextChanged="SearchTextBox_TextChanged" />
+                        <TextBlock x:Name="SearchPlaceholderText" Text="Search this list…"
+                                   Margin="7,0,0,0" VerticalAlignment="Center" FontSize="10"
+                                   Foreground="{StaticResource TextMuted}" IsHitTestVisible="False" />
+                    </Grid>
+                    <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Hidden"
                                   HorizontalScrollBarVisibility="Disabled">
                         <StackPanel x:Name="ContentItems" />
                     </ScrollViewer>
@@ -102,7 +113,7 @@
 
         <DockPanel x:Name="BottomBar" Grid.Row="2" Margin="0" LastChildFill="True"
                    Background="Transparent">
-            <TextBlock x:Name="VersionText" DockPanel.Dock="Right" Text="v1.07.03"
+            <TextBlock x:Name="VersionText" DockPanel.Dock="Right" Text="v1.07.04"
                        FontSize="10" Foreground="{StaticResource TextMuted}" VerticalAlignment="Center" />
             <Border x:Name="StatusIndicatorBorder" VerticalAlignment="Stretch"
                     Padding="5,6.5" BorderThickness="0" CornerRadius="0"
